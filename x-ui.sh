@@ -422,7 +422,7 @@ enable_bbr() {
     fedora)
         dnf -y update && dnf -y install ca-certificates
         ;;
-    arch | manjaro)
+    arch | manjaro | parch)
         pacman -Sy --noconfirm ca-certificates
         ;;
     *)
@@ -750,7 +750,7 @@ ssl_cert_issue() {
     fedora)
         dnf -y update && dnf -y install socat
         ;;
-    arch | manjaro)
+    arch | manjaro | parch)
         pacman -Sy --noconfirm socat
         ;;
     *)
@@ -1118,7 +1118,7 @@ install_iplimit() {
         fedora)
             dnf -y update && dnf -y install fail2ban
             ;;
-        arch | manjaro)
+        arch | manjaro | parch)
         pacman -Syu --noconfirm fail2ban
         ;;
         *)
@@ -1200,7 +1200,7 @@ remove_iplimit() {
             dnf remove fail2ban -y
             dnf autoremove -y
             ;;
-        arch | manjaro)
+        arch | manjaro | parch)
             pacman -Rns --noconfirm fail2ban
             ;;
         *)
