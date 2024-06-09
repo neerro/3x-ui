@@ -258,22 +258,22 @@ class QuicStreamSettings extends CommonClass {
 }
 
 class GrpcStreamSettings extends CommonClass {
-    constructor(serviceName="", multiMode=false, authority="") {
+    constructor(serviceName="", authority="", multiMode=false) {
         super();
         this.serviceName = serviceName;
-        this.multiMode = multiMode;
         this.authority = authority;
+        this.multiMode = multiMode;
     }
 
     static fromJson(json={}) {
-        return new GrpcStreamSettings(json.serviceName, json.multiMode,json.authority);
+        return new GrpcStreamSettings(json.serviceName, json.authority, json.multiMode );
     }
 
     toJson() {
         return {
             serviceName: this.serviceName,
-            multiMode: this.multiMode,
-            authority: this.authority
+            authority: this.authority,
+            multiMode: this.multiMode
         }
     }
 }
@@ -361,11 +361,12 @@ class RealityStreamSettings extends CommonClass {
     }
 };
 class SockoptStreamSettings extends CommonClass {
-    constructor(dialerProxy = "", tcpFastOpen = false, tcpKeepAliveInterval = 0, tcpNoDelay = false) {
+    constructor(dialerProxy = "", tcpFastOpen = false, tcpKeepAliveInterval = 0, tcpMptcp = false, tcpNoDelay = false) {
         super();
         this.dialerProxy = dialerProxy;
         this.tcpFastOpen = tcpFastOpen;
         this.tcpKeepAliveInterval = tcpKeepAliveInterval;
+        this.tcpMptcp = tcpMptcp;
         this.tcpNoDelay = tcpNoDelay;
     }
 
@@ -375,6 +376,7 @@ class SockoptStreamSettings extends CommonClass {
             json.dialerProxy,
             json.tcpFastOpen,
             json.tcpKeepAliveInterval,
+            json.tcpMptcp,
             json.tcpNoDelay,
         );
     }
@@ -384,6 +386,7 @@ class SockoptStreamSettings extends CommonClass {
             dialerProxy: this.dialerProxy,
             tcpFastOpen: this.tcpFastOpen,
             tcpKeepAliveInterval: this.tcpKeepAliveInterval,
+            tcpMptcp: this.tcpMptcp,
             tcpNoDelay: this.tcpNoDelay,
         };
     }
@@ -1050,7 +1053,6 @@ Outbound.WireguardSettings = class extends CommonClass {
         super();
         this.mtu = mtu;
         this.secretKey = secretKey;
-        this.pubKey = secretKey.length>0 ? Wireguard.generateKeypair(secretKey).publicKey : '';
         this.address = address instanceof Array ? address.join(',') : address;
         this.workers = workers;
         this.domainStrategy = domainStrategy;

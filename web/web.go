@@ -24,9 +24,9 @@ import (
 	"x-ui/web/network"
 	"x-ui/web/service"
 
-	sessions "github.com/Calidity/gin-sessions"
-	"github.com/Calidity/gin-sessions/cookie"
 	"github.com/gin-contrib/gzip"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/robfig/cron/v3"
 )
@@ -354,8 +354,6 @@ func (s *Server) Start() (err error) {
 	}
 	s.listener = listener
 
-	s.startTask()
-
 	s.httpServer = &http.Server{
 		Handler: engine,
 	}
@@ -363,6 +361,8 @@ func (s *Server) Start() (err error) {
 	go func() {
 		s.httpServer.Serve(listener)
 	}()
+
+	s.startTask()
 
 	isTgbotenabled, err := s.settingService.GetTgbotenabled()
 	if (err == nil) && (isTgbotenabled) {
